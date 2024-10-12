@@ -1,25 +1,24 @@
-'use client';
-
-// src/components/molecules/LanguageSwitcher/index.tsx
-import { usePathname, useRouter } from 'next/navigation';
+import { useLanguage } from '@/hooks/useLanguage';
 
 import styles from './LanguageSwitcher.module.css';
 
 export const LanguageSwitcher = () => {
-  const pathname = usePathname();
-  const router = useRouter();
-
-  const changeLanguage = (newLocale: string) => {
-    const pathWithoutLocale = pathname.replace(/^\/(en|ja)/, '') || '/';
-    router.push(`/${newLocale}${pathWithoutLocale}`);
-  };
+  const { changeLanguage, currentLang } = useLanguage();
 
   return (
     <div>
-      <button className={styles.button} onClick={() => changeLanguage('en')}>
+      <button
+        className={styles.button}
+        onClick={() => changeLanguage('en')}
+        disabled={currentLang === 'en'}
+      >
         English
       </button>
-      <button className={styles.button} onClick={() => changeLanguage('ja')}>
+      <button
+        className={styles.button}
+        onClick={() => changeLanguage('ja')}
+        disabled={currentLang === 'ja'}
+      >
         日本語
       </button>
     </div>

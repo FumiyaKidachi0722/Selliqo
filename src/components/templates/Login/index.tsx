@@ -1,26 +1,18 @@
 // src/components/templates/Login/index.tsx
 import { useEffect, useState } from 'react';
 
+import { useLanguage } from '@/hooks/useLanguage';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useRouter } from 'next/navigation';
 
 import { LoginForm } from '@/components/molecules/LoginForm';
 import { useTranslation } from '@/components/templates/TranslationProvider';
 
-// Zustandのストアをインポート
-
-interface User {
-  username: string;
-  email: string;
-  password: string;
-}
-
-export const LoginTemplate: React.FC = () => {
+export const LoginTemplate = () => {
   const messages = useTranslation();
   const [error, setError] = useState<string | null>(null);
-  const [users, setUsers] = useState<User[]>([]);
-  const router = useRouter();
-  const login = useAuthStore((state) => state.login); // Zustandのloginアクションを取得
+  const [users, setUsers] = useState<any[]>([]);
+  const { navigate } = useLanguage();
+  const login = useAuthStore((state) => state.login);
 
   useEffect(() => {
     // ダミーデータをpublic配下から取得
@@ -45,12 +37,16 @@ export const LoginTemplate: React.FC = () => {
     );
 
     if (user) {
-      // ログイン成功時に状態を更新
-      login('dummy-jwt-token'); // JWTトークンの代わりにダミーのトークンを保存
-      console.log('Login successful');
-      router.push('/'); // ホームページにリダイレクト
+      login('dummy-token', user.username, user.email, user.role);
+      if (user.role === '0' || user.role === '1') {
+        navigate('/admin/dashboard');
+      } else if (user.role === '2') {
+        navigate('/user/dashboard');
+      } else {
+        setError('Unauthorized role');
+      }
     } else {
-      setError(messages.errors?.invalidCredentials || 'Invalid credentials');
+      setError('Invalid credentials');
     }
   };
 

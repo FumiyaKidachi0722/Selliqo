@@ -1,12 +1,20 @@
 [
   {
-    "username": "adminuser",
+    "username": "admin",
     "email": "admin@example.com",
-    "password": "Zaq12wsx"
+    "password": "Zaq12wsx",
+    "role": "0"
   },
   {
-    "username": "testuser",
-    "email": "test@example.com",
-    "password": "Zaq12wsx"
+    "username": "manager",
+    "email": "manager@example.com",
+    "password": "Zaq12wsx",
+    "role": "1"
+  },
+  {
+    "username": "user",
+    "email": "user@example.com",
+    "password": "Zaq12wsx",
+    "role": "2"
   }
 ]
