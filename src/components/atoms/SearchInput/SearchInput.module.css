@@ -1,0 +1,7 @@
+/* src/components/atoms/SearchInput/SearchInput.module.css */
+
+.input {
+  border: 1px solid #d1d5db; /* gray-300 */
+  padding: 8px;
+  border-radius: 4px;
+}
