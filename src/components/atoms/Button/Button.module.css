@@ -1,15 +1,45 @@
 /* src/components/atoms/Button/Button.module.css */
 
 .primary {
-  background-color: #3b82f6; /* blue-500 */
+  background-color: #007bff;
   color: white;
-  padding: 8px 16px;
-  border-radius: 4px;
 }
 
 .secondary {
-  background-color: #6b7280; /* gray-500 */
+  background-color: #6c757d;
   color: white;
-  padding: 8px 16px;
-  border-radius: 4px;
+}
+
+.danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.outline {
+  background-color: transparent;
+  border: 1px solid #007bff;
+  color: #007bff;
+}
+
+/* サイズ */
+.small {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.medium {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+.large {
+  padding: 0.75rem 1.25rem;
+  font-size: 1.25rem;
+}
+
+/* 無効化スタイル */
+.buttonDisabled {
+  background-color: #e0e0e0;
+  color: #a0a0a0;
+  cursor: not-allowed;
 }

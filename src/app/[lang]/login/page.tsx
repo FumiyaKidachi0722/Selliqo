@@ -1,14 +1,8 @@
 'use client';
 
-import { useTranslation } from '@/components/templates/TranslationProvider';
+// src/app/[lang]/login/page.tsx
+import { LoginTemplate } from '@/components/templates/Login';
 
 export default function LoginPage() {
-  const messages = useTranslation();
-
-  return (
-    <div>
-      <h2>{messages.common?.loginTitle || 'Login'}</h2>
-      <button>{messages.common?.loginButton || 'Login Button'}</button>
-    </div>
-  );
+  return <LoginTemplate />;
 }

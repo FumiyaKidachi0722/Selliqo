@@ -16,3 +16,13 @@
   justify-content: center;
   color: white;
 }
+
+/* フェードアニメーション */
+.buttonFade {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.buttonFadeOut {
+  opacity: 0;
+}
