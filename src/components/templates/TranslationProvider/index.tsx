@@ -1,10 +1,16 @@
 'use client';
 
 // src/components/templates/TranslationProvider/index.tsx
-import { createContext, useContext, useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from 'react';
 
 import { Messages } from '@/types/translation';
-import { useParams } from 'next/navigation';
 
 const TranslationContext = createContext<Messages | null>(null);
 
@@ -25,24 +31,28 @@ export const TranslationProvider = ({
   const [messages, setMessages] = useState<Messages>({});
   const [loading, setLoading] = useState(true);
 
-  const loadMessages = async (files: string[]) => {
-    const allMessages: Messages = {};
-    try {
-      for (const file of files) {
-        const res = await fetch(`/locales/${lang}/${file}.json`);
-        if (res.ok) {
-          const data = await res.json();
-          allMessages[file] = data;
-        } else {
-          console.error(`Failed to load ${file}.json: ${res.statusText}`);
+  // loadMessagesをuseCallbackでメモ化
+  const loadMessages = useCallback(
+    async (files: string[]) => {
+      const allMessages: Messages = {};
+      try {
+        for (const file of files) {
+          const res = await fetch(`/locales/${lang}/${file}.json`);
+          if (res.ok) {
+            const data = await res.json();
+            allMessages[file] = data;
+          } else {
+            console.error(`Failed to load ${file}.json: ${res.statusText}`);
+          }
         }
+        return allMessages;
+      } catch (error) {
+        console.error('Error loading messages:', error);
+        return {};
       }
-      return allMessages;
-    } catch (error) {
-      console.error('Error loading messages:', error);
-      return {};
-    }
-  };
+    },
+    [lang]
+  ); // langを依存配列に追加
 
   useEffect(() => {
     let isMounted = true;
@@ -58,7 +68,7 @@ export const TranslationProvider = ({
     return () => {
       isMounted = false;
     };
-  }, [lang]);
+  }, [lang, loadMessages]); // loadMessagesを依存配列に追加
 
   if (loading) {
     return <div>Loading translations...</div>;

@@ -1,16 +1,16 @@
 // src/components/templates/Login/index.tsx
 import { useEffect, useState } from 'react';
 
-import { useLanguage } from '@/hooks/useLanguage';
-import { useAuthStore } from '@/store/useAuthStore';
-
 import { LoginForm } from '@/components/molecules/LoginForm';
 import { useTranslation } from '@/components/templates/TranslationProvider';
+import { useLanguage } from '@/hooks/useLanguage';
+import { useAuthStore } from '@/store/useAuthStore';
+import { User } from '@/types/user';
 
 export const LoginTemplate = () => {
   const messages = useTranslation();
   const [error, setError] = useState<string | null>(null);
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const { navigate } = useLanguage();
   const login = useAuthStore((state) => state.login);
 

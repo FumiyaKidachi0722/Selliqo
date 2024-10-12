@@ -1,10 +1,7 @@
 // src/components/molecules/UserActions/index.tsx
+import { Button } from '@/components/atoms/Button';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useAuthStore } from '@/store/useAuthStore';
-import { usePathname, useRouter } from 'next/navigation';
-
-// Zustandのストアをインポート
-import { Button } from '@/components/atoms/Button';
 
 import styles from './UserActions.module.css';
 
