@@ -6,23 +6,28 @@
 
 ## ディレクトリ構造
 
-```
+```plaintext
 Selliqo/
 ├── public/                       # 静的ファイル（画像、フォントなど）
 ├── src/                          # ソースコード
 │   ├── app/                      # Next.js 15のApp Routerを使用したルート
-│   │   ├── layout.tsx            # アプリ全体のレイアウト（ヘッダー、フッター）
-│   │   ├── page.tsx              # ホームページのエントリーポイント
-│   │   ├── product/              # 商品ページ
-│   │   │   ├── page.tsx          # 商品リストページ
-│   │   │   └── [id]/page.tsx     # 商品詳細ページ
-│   │   ├── cart/                 # カートページ
-│   │   │   └── page.tsx          # カートのエントリーポイント
-│   │   ├── login/                # ログインページ
-│   │   │   └── page.tsx          # ログインページの実装
+│   │   ├── [lang]/               # 多言語対応のルートディレクトリ
+│   │   │   ├── layout.tsx        # 言語ごとのレイアウト（ヘッダー、フッター）
+│   │   │   ├── page.tsx          # 言語ごとのホームページエントリーポイント
+│   │   │   ├── dashboard/        # ダッシュボード関連ページ
+│   │   │   │   └── page.tsx      # ダッシュボードページ
+│   │   │   ├── login/            # ログインページ
+│   │   │   │   └── page.tsx      # ログインページの実装
+│   │   │   ├── product/          # 商品ページ
+│   │   │   │   ├── page.tsx      # 商品リストページ
+│   │   │   │   └── [id]/page.tsx # 商品詳細ページ
+│   │   │   ├── cart/             # カートページ
+│   │   │   │   └── page.tsx      # カートのエントリーポイント
+│   │   ├── layout.tsx            # アプリ全体の共通レイアウト
+│   │   ├── page.tsx              # グローバルなホームページエントリーポイント
 │   │   ├── api/                  # サーバーサイドAPIルート
 │   │   │   ├── login/            # 認証用API
-│   │   │   │   └── route.ts      # ログインAPIエンドポイントの実装
+│   │   │   │   └── route.ts      # ログインAPIエンドポイント
 │   ├── components/               # Atomic Designに基づくUIコンポーネント
 │   │   ├── atoms/                # 基本的なUI要素（ボタン、テキスト、入力フォームなど）
 │   │   ├── molecules/            # 複数のatomを組み合わせたもの（検索バー、カートアイテムなど）
@@ -32,7 +37,7 @@ Selliqo/
 │   ├── layouts/                  # ページレイアウト（管理者用、ユーザー用）
 │   ├── services/                 # APIクライアント（AxiosやGraphQLクエリ）
 │   ├── store/                    # グローバル状態管理（ZustandやRedux）
-│   ├── styles/                   # グローバルおよびモジュールCSS（Tailwindなど）
+│   ├── styles/                   # グローバルおよびモジュールCSS
 │   ├── types/                    # TypeScriptの型定義（APIレスポンス、コンポーネントのProps）
 │   └── utils/                    # ヘルパー関数やユーティリティ
 ├── prisma/                       # Prismaスキーマとマイグレーション

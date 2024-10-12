@@ -1,0 +1,7 @@
+/* src/components/atoms/Logo/Logo.module.css */
+
+.logo {
+  height: 80px;
+  width: 80px;
+  object-fit: contain;
+}

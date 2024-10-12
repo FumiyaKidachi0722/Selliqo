@@ -1,9 +1,5 @@
-const Home = () => {
-  return (
-    <div>
-      <h2>Welcome to the E-Commerce Platform</h2>
-    </div>
-  );
-};
+import { redirect } from 'next/navigation';
 
-export default Home;
+export default function RootPage() {
+  redirect('/ja');
+}
