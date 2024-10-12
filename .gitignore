@@ -1,0 +1,49 @@
+# Node.js関連の不要なファイル
+node_modules/
+.npm/
+.pnp.cjs
+.pnp.loader.mjs
+.pnp/
+.yarn/
+.yarnrc.yml
+yarn-error.log
+yarn-debug.log*
+yarn.lock
+
+# TypeScriptビルド出力
+dist/
+out/
+.next/
+.next.cache/
+*.tsbuildinfo
+
+# ログファイル
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+stacktrace.log
+
+# 環境変数ファイル
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# エディタやOSによる不要ファイル
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# テストやカバレッジレポート
+coverage/
+.jest/
+.cypress/
