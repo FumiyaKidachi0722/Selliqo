@@ -1,0 +1,29 @@
+[
+  {
+    "id": "1",
+    "name": "ウェブ開発ブートキャンプ",
+    "description": "HTML、CSS、JavaScript、およびReactを網羅した包括的なコースです。",
+    "price": 1000,
+    "schedule": "毎週月曜と水曜、午後6時から9時",
+    "category": "ウェブ開発",
+    "teacher": "ジョン・ドウ"
+  },
+  {
+    "id": "2",
+    "name": "Pythonによるデータサイエンス",
+    "description": "Pythonを使ったデータ分析、可視化、および機械学習を学びます。",
+    "price": 2000,
+    "schedule": "毎週火曜と木曜、午後7時から10時",
+    "category": "データサイエンス",
+    "teacher": "ジェーン・スミス"
+  },
+  {
+    "id": "3",
+    "name": "デジタルマーケティングマスタークラス",
+    "description": "SEO、PPC、ソーシャルメディアを含むデジタルマーケティングの技術を習得します。",
+    "price": 3000,
+    "schedule": "毎週金曜、午後5時から8時",
+    "category": "マーケティング",
+    "teacher": "エミリー・ブラウン"
+  }
+]
