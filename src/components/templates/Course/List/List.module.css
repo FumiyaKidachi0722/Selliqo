@@ -1,0 +1,66 @@
+/* src/components/templates/Course/List/List.module.css */
+
+.listContainer {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.courseItem {
+  margin-bottom: 20px;
+  list-style: none;
+}
+
+.courseLink {
+  display: block;
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.courseLink:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.courseTitle {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.courseDescription {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.listContainer ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Improved User Experience Animations */
+@keyframes hoverGlow {
+  0% {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  100% {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.courseLink:hover {
+  animation: hoverGlow 0.3s ease-in-out;
+}

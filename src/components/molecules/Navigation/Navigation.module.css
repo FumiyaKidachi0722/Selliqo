@@ -20,3 +20,9 @@
 .navItem a:hover {
   color: #3b82f6; /* blue-500 */
 }
+
+.disabledLink {
+  color: gray;
+  cursor: not-allowed;
+  text-decoration: none;
+}

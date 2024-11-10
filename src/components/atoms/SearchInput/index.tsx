@@ -9,6 +9,11 @@ export const SearchInput = ({
   placeholder = 'Search...',
 }: SearchInputProps) => {
   return (
-    <input type="text" placeholder={placeholder} className={styles.input} />
+    <input
+      type="text"
+      placeholder={placeholder}
+      className={styles.input}
+      disabled
+    />
   );
 };
