@@ -2,8 +2,13 @@ export interface Course {
   id: string;
   name: string;
   description: string;
+  image: string;
   price: number;
-  schedule: string;
-  category: string;
-  teacher: string;
+  metadata: {
+    category: string;
+    schedule: string;
+    teacher: string;
+  };
 }
+
+export type Courses = Course[];

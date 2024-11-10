@@ -1,5 +1,4 @@
 // src/components/templates/Course/Detail/index.tsx
-
 import { useEffect, useState } from 'react';
 
 import { Course } from '@/types/course';
@@ -18,14 +17,14 @@ export const CourseDetailTemplate = ({ id }: CourseDetailTemplateProps) => {
 
     const fetchCourse = async () => {
       try {
-        const response = await fetch('/data/courses.json');
-        const data: Course[] = await response.json();
-        const foundCourse = data.find((course: Course) => course.id === id);
-        setCourse(foundCourse || null);
+        const response = await fetch(`/api/courses/${id}`);
+        const data: Course = await response.json();
+        setCourse(data);
       } catch (error) {
         console.error('Failed to fetch course data:', error);
       }
     };
+
     fetchCourse();
   }, [id]);
 
@@ -40,8 +39,10 @@ export const CourseDetailTemplate = ({ id }: CourseDetailTemplateProps) => {
       <p className={styles.coursePrice}>
         価格: \{course.price.toLocaleString()}
       </p>
-      <p className={styles.courseSchedule}>スケジュール: {course.schedule}</p>
-      <p className={styles.courseTeacher}>講師: {course.teacher}</p>
+      <p className={styles.courseSchedule}>
+        スケジュール: {course.metadata.schedule}
+      </p>
+      <p className={styles.courseTeacher}>講師: {course.metadata.teacher}</p>
     </div>
   );
 };

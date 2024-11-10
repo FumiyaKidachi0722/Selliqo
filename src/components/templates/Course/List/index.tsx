@@ -18,11 +18,20 @@ export const CourseListTemplate = () => {
   };
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      const response = await fetch('/data/courses.json');
-      const data = await response.json();
-      setCourses(data);
-    };
+    async function fetchCourses() {
+      try {
+        const response = await fetch('/api/courses');
+        if (!response.ok) {
+          throw new Error('Failed to fetch courses');
+        }
+        const data = await response.json();
+        console.log('data: ', data);
+        setCourses(data);
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      }
+    }
+
     fetchCourses();
   }, []);
 
@@ -38,10 +47,11 @@ export const CourseListTemplate = () => {
             >
               <div>
                 <h2 className={styles.courseTitle}>{course.name}</h2>
+                <h3>{course.metadata.category}</h3>
                 <p className={styles.courseDescription}>{course.description}</p>
                 <p>価格: ¥{course.price.toLocaleString()}</p>
-                <p>スケジュール: {course.schedule}</p>
-                <p>講師: {course.teacher}</p>
+                <p>スケジュール: {course.metadata.schedule}</p>
+                <p>講師: {course.metadata.teacher}</p>
               </div>
             </Link>
           </li>

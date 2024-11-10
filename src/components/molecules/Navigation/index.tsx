@@ -19,10 +19,10 @@ export const Navigation = () => {
           <Link href={createLink('/')}>Home</Link>
         </li>
         <li className={styles.navItem}>
-          <Link href={createLink('/about')}>About</Link>
+          <span className={styles.disabledLink}>About</span>
         </li>
         <li className={styles.navItem}>
-          <Link href={createLink('/contact')}>Contact</Link>
+          <span className={styles.disabledLink}>Contact</span>
         </li>
         <li className={styles.navItem}>
           <Link href={createLink('/course')}>Course</Link>
