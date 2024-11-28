@@ -25,7 +25,6 @@ export const CourseListTemplate = () => {
           throw new Error('Failed to fetch courses');
         }
         const data = await response.json();
-        console.log('data: ', data);
         setCourses(data);
       } catch (error) {
         console.error('Error fetching courses:', error);
