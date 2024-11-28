@@ -34,6 +34,21 @@
   animation: pulse 1.5s infinite;
 }
 
+.purchaseButton {
+  background-color: #6772e5;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.purchaseButton:hover {
+  background-color: #5469d4;
+}
+
 /* Animations */
 @keyframes fadeIn {
   0% {
