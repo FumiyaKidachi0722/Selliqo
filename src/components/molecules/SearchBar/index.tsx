@@ -12,7 +12,7 @@ export const SearchBar = () => {
   return (
     <div className={styles.container}>
       <SearchInput />
-      <Button label="Search" onClick={handleSearch} />
+      <Button label="Search" onClick={handleSearch} disabled />
     </div>
   );
 };

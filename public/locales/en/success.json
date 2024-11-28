@@ -1,0 +1,6 @@
+{
+  "title": "Purchase Successful!",
+  "sessionId": "Session ID: {{sessionId}}",
+  "thanks": "Thank you for your purchase.",
+  "return": "Return to Home"
+}
