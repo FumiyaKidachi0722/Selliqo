@@ -1,11 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 import stripe from '@/services/stripe';
-
-// 型定義
-interface Params {
-  id: string;
-}
 
 interface StripePrice {
   unit_amount?: number;
@@ -24,14 +19,13 @@ interface StripeProduct {
   };
 }
 
-// GET ハンドラー
-export async function GET(request: NextRequest, context: { params: Params }) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    // paramsからidを取得
-    const params = await context.params; // 非同期解決
-    console.log('Resolved params:', params);
+    const { id } = await params;
 
-    const id = params.id;
     if (!id) {
       console.error('Error: Product ID is missing');
       return NextResponse.json(
@@ -40,12 +34,10 @@ export async function GET(request: NextRequest, context: { params: Params }) {
       );
     }
 
-    // Stripe APIから商品情報を取得
     const product = (await stripe.products.retrieve(id, {
       expand: ['default_price'],
     })) as StripeProduct;
 
-    // 商品情報を整形
     const formattedProduct = {
       id: product.id,
       name: product.name,
@@ -59,12 +51,14 @@ export async function GET(request: NextRequest, context: { params: Params }) {
       },
     };
 
-    // JSONレスポンスを返す
     return NextResponse.json(formattedProduct);
   } catch (error) {
     console.error('Error fetching product:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch product' },
+      {
+        error: 'Failed to fetch product',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
