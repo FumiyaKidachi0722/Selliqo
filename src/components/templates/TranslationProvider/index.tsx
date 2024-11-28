@@ -1,17 +1,18 @@
+// src/components/templates/TranslationProvider/index.tsx
 'use client';
 
 import { usePathname } from 'next/navigation';
 import {
   createContext,
   useContext,
-  useEffect,
   useState,
+  useEffect,
   useCallback,
 } from 'react';
 
 import { Messages } from '@/types/translation';
 
-const TranslationContext = createContext<Messages | null>(null);
+export const TranslationContext = createContext<Messages | null>(null);
 
 export const useTranslation = (): Messages => {
   const context = useContext(TranslationContext);
@@ -21,45 +22,69 @@ export const useTranslation = (): Messages => {
   return context;
 };
 
+const supportedLanguages = ['en', 'ja']; // サポートする言語を定義
+
 export const TranslationProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
   const pathname = usePathname();
-  const lang = pathname.split('/')[1] || 'ja'; // デフォルトを 'ja' に設定
-
+  const [lang, setLang] = useState('ja'); // デフォルトの言語
   const [messages, setMessages] = useState<Messages>({});
   const [loading, setLoading] = useState(true);
 
-  const loadMessages = useCallback(
-    async (files: string[]) => {
-      const allMessages: Messages = {};
-      try {
-        for (const file of files) {
-          const res = await fetch(`/locales/${lang}/${file}.json`);
-          if (res.ok) {
-            const data = await res.json();
-            allMessages[file] = data;
-          } else {
-            console.warn(`Failed to load ${file}.json: ${res.statusText}`);
-            allMessages[file] = {}; // 空の翻訳データを設定
-          }
-        }
-        return allMessages;
-      } catch (error) {
-        console.error('Error loading messages:', error);
-        return {};
+  // パス名から言語コードを抽出
+  useEffect(() => {
+    const pathSegments = pathname?.split('/');
+    const potentialLang = pathSegments && pathSegments[1];
+    if (supportedLanguages.includes(potentialLang)) {
+      setLang(potentialLang);
+    } else {
+      setLang('ja'); // フォールバックとしてデフォルト言語を設定
+    }
+  }, [pathname]);
+
+  const loadMessages = useCallback(async () => {
+    try {
+      // manifest.jsonをフェッチ
+      const manifestRes = await fetch(`/locales/${lang}/manifest.json`);
+      if (!manifestRes.ok) {
+        throw new Error(
+          `Failed to load manifest.json: ${manifestRes.statusText}`
+        );
       }
-    },
-    [lang]
-  );
+      const files: string[] = await manifestRes.json();
+
+      const allMessages: Messages = {};
+
+      // 各翻訳ファイルを並行してフェッチ
+      const fetchPromises = files.map(async (file) => {
+        const res = await fetch(`/locales/${lang}/${file}.json`);
+        if (res.ok) {
+          const data = await res.json();
+          allMessages[file] = data;
+        } else {
+          console.warn(`Failed to load ${file}.json: ${res.statusText}`);
+          allMessages[file] = {};
+        }
+      });
+
+      await Promise.all(fetchPromises);
+
+      return allMessages;
+    } catch (error) {
+      console.error('Error loading messages:', error);
+      return {};
+    }
+  }, [lang]);
 
   useEffect(() => {
     let isMounted = true;
 
     setLoading(true);
-    loadMessages(['common']).then((loadedMessages) => {
+
+    loadMessages().then((loadedMessages) => {
       if (isMounted) {
         setMessages(loadedMessages);
         setLoading(false);
@@ -72,7 +97,7 @@ export const TranslationProvider = ({
   }, [lang, loadMessages]);
 
   if (loading) {
-    return <div>Loading translations...</div>;
+    return <div>翻訳を読み込んでいます...</div>;
   }
 
   return (

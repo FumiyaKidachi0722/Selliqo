@@ -1,51 +1,51 @@
-import { useEffect, useState } from 'react';
+// src/hooks/useTranslation.ts
 
-type Translations = Record<string, string>;
+import { useContext } from 'react';
 
-export const useTranslation = (namespace: string) => {
-  const [translations, setTranslations] = useState<Translations>({});
-  const [loading, setLoading] = useState(true);
+import { TranslationContext } from '@/components/templates/TranslationProvider';
 
-  const fetchTranslations = async (lang: string) => {
-    try {
-      const response = await fetch(`/locales/${lang}/${namespace}.json`);
-      if (!response.ok) {
-        console.error(
-          `Failed to load ${namespace}.json: ${response.statusText}`
-        );
-        return {};
+type Messages = {
+  [key: string]: string | Messages;
+};
+
+export const useTranslation = () => {
+  const messages = useContext(TranslationContext);
+  if (!messages) {
+    throw new Error('useTranslation must be used within a TranslationProvider');
+  }
+
+  const getNestedValue = (obj: Messages, key: string): string | undefined => {
+    const keys = key.split('.');
+    let result: string | Messages | undefined = obj;
+
+    for (const k of keys) {
+      if (result && typeof result === 'object' && k in result) {
+        result = (result as Messages)[k];
+      } else {
+        return undefined;
       }
-      return await response.json();
-    } catch (error) {
-      console.error(`Error fetching translations for ${namespace}:`, error);
-      return {};
-    }
-  };
-
-  useEffect(() => {
-    const lang = localStorage.getItem('language') || 'ja'; // デフォルト言語を 'ja' とする
-    setLoading(true);
-
-    const loadTranslations = async () => {
-      const data = await fetchTranslations(lang);
-      setTranslations(data);
-      setLoading(false);
-    };
-
-    loadTranslations();
-  }, [namespace]);
-
-  const t = (key: string, replacements?: Record<string, string | number>) => {
-    let translation = translations[key] || key;
-
-    if (replacements) {
-      Object.entries(replacements).forEach(([k, v]) => {
-        translation = translation.replace(`{{${k}}}`, String(v));
-      });
     }
 
-    return translation;
+    return typeof result === 'string' ? result : undefined;
   };
 
-  return { t, loading };
+  const replacePlaceholders = (
+    text: string,
+    variables: Record<string, string>
+  ): string => {
+    return text.replace(
+      /{{\s*(\w+)\s*}}/g,
+      (_, varName) => variables[varName] || ''
+    );
+  };
+
+  const t = (key: string, variables: Record<string, string> = {}): string => {
+    const value = getNestedValue(messages, key);
+    if (!value) {
+      return key;
+    }
+    return replacePlaceholders(value, variables);
+  };
+
+  return { t };
 };

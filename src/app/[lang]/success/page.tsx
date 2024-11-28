@@ -10,15 +10,15 @@ import { useTranslation } from '@/hooks/useTranslation';
 export default function SuccessPage() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
-  const { t } = useTranslation('success'); // 翻訳用フック
+  const { t } = useTranslation();
 
   return (
     <div style={{ textAlign: 'center', padding: '20px' }}>
-      <h1>{t('title')}</h1>
-      {sessionId && <p>{t('sessionId', { sessionId })}</p>}
-      <p>{t('thanks')}</p>
+      <h1>{t('success.title')}</h1>
+      {sessionId && <p>{t('success.sessionId', { sessionId })}</p>}
+      <p>{t('success.thanks')}</p>
       <Link href="/" legacyBehavior>
-        {t('return')}
+        {t('success.return')}
       </Link>
     </div>
   );
