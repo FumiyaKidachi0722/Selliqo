@@ -1,7 +1,6 @@
 'use client';
 
-// src/components/templates/TranslationProvider/index.tsx
-import { useParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import {
   createContext,
   useContext,
@@ -27,11 +26,12 @@ export const TranslationProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { lang } = useParams();
+  const pathname = usePathname();
+  const lang = pathname.split('/')[1] || 'ja'; // デフォルトを 'ja' に設定
+
   const [messages, setMessages] = useState<Messages>({});
   const [loading, setLoading] = useState(true);
 
-  // loadMessagesをuseCallbackでメモ化
   const loadMessages = useCallback(
     async (files: string[]) => {
       const allMessages: Messages = {};
@@ -42,7 +42,8 @@ export const TranslationProvider = ({
             const data = await res.json();
             allMessages[file] = data;
           } else {
-            console.error(`Failed to load ${file}.json: ${res.statusText}`);
+            console.warn(`Failed to load ${file}.json: ${res.statusText}`);
+            allMessages[file] = {}; // 空の翻訳データを設定
           }
         }
         return allMessages;
@@ -52,7 +53,7 @@ export const TranslationProvider = ({
       }
     },
     [lang]
-  ); // langを依存配列に追加
+  );
 
   useEffect(() => {
     let isMounted = true;
@@ -68,7 +69,7 @@ export const TranslationProvider = ({
     return () => {
       isMounted = false;
     };
-  }, [lang, loadMessages]); // loadMessagesを依存配列に追加
+  }, [lang, loadMessages]);
 
   if (loading) {
     return <div>Loading translations...</div>;

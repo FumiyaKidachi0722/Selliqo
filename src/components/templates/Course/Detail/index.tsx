@@ -34,6 +34,7 @@ export const CourseDetailTemplate = ({ id }: CourseDetailTemplateProps) => {
 
       const data = await response.json();
       if (data.url) {
+        console.log('data: ', data);
         window.location.href = data.url;
       } else {
         throw new Error('Failed to retrieve Stripe Checkout URL');
