@@ -14,25 +14,25 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   onLogin,
   errorMessage,
 }) => {
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState(''); // Email または Username
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onLogin(email, password);
+    onLogin(identifier, password);
   };
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.inputGroup}>
-        <label htmlFor="email">Email or Username:</label>
+        <label htmlFor="identifier">Email or Username:</label>
         <input
-          id="email"
+          id="identifier"
           type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={identifier}
+          onChange={(e) => setIdentifier(e.target.value)}
           required
-          aria-describedby={errorMessage ? 'error-email' : undefined}
+          aria-describedby={errorMessage ? 'error-identifier' : undefined}
         />
       </div>
       <div className={styles.inputGroup}>

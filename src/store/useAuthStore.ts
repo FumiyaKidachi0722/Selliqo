@@ -7,7 +7,21 @@ interface AuthState {
   username: string | null;
   email: string | null;
   role: string | null; // 役割 ("0" for admin, "1" for manager, "2" for user)
-  login: (token: string, username: string, email: string, role: string) => void;
+  stripeCustomerId: string | null;
+  login: (
+    token: string,
+    username: string,
+    email: string,
+    role: string,
+    stripeCustomerId: string
+  ) => void;
+  signup: (
+    token: string,
+    username: string,
+    email: string,
+    role: string,
+    stripeCustomerId: string
+  ) => void;
   logout: () => void;
 }
 
@@ -17,14 +31,26 @@ export const useAuthStore = create<AuthState>((set) => ({
   username: null,
   email: null,
   role: null,
+  stripeCustomerId: null,
 
-  login: (token, username, email, role) =>
+  login: (token, username, email, role, stripeCustomerId) =>
     set({
       isLoggedIn: true,
       token,
       username,
       email,
       role,
+      stripeCustomerId,
+    }),
+
+  signup: (token, username, email, role, stripeCustomerId) =>
+    set({
+      isLoggedIn: true,
+      token,
+      username,
+      email,
+      role,
+      stripeCustomerId,
     }),
 
   logout: () =>
@@ -34,5 +60,6 @@ export const useAuthStore = create<AuthState>((set) => ({
       username: null,
       email: null,
       role: null,
+      stripeCustomerId: null,
     }),
 }));

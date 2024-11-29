@@ -4,5 +4,7 @@
   "price": "価格",
   "addToCart": "カートに追加",
   "loginTitle": "アカウントにログイン",
-  "loginButton": "ログイン"
+  "loginButton": "ログイン",
+  "signupTitle": "アカウントを新規登録",
+  "signupButton": "ログイン"
 }
