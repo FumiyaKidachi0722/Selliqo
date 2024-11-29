@@ -1,0 +1,15 @@
+/* src/components/molecules/LanguageToggleButton/LanguageToggleButton.module.css */
+.toggleButton {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.toggleButton:hover {
+  background-color: #0056b3;
+}

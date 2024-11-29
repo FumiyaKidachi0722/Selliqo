@@ -5,6 +5,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 
 export default function HomePage() {
   const { t } = useTranslation();
+
   return (
     <div>
       <header>

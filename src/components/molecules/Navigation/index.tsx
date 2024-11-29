@@ -1,6 +1,8 @@
+'use client';
+
 import Link from 'next/link';
 
-import { useLanguage } from '@/hooks/useLanguage';
+import { useLanguage } from '@/providers/LanguageProvider';
 
 import styles from './Navigation.module.css';
 

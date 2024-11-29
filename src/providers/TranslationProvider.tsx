@@ -1,7 +1,9 @@
+// src/providers/TranslationProvider.tsx
 'use client';
 
-import { usePathname } from 'next/navigation';
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
+
+import { useAuthStore } from '@/store/useAuthStore';
 
 export type Messages = {
   [namespace: string]: { [key: string]: string };
@@ -14,29 +16,25 @@ export const TranslationProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const pathname = usePathname();
-  const [currentLang, setCurrentLang] = useState('en');
+  const language = useAuthStore((state) => state.language);
   const [messages, setMessages] = useState<Messages>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const lang = pathname.startsWith('/ja') ? 'ja' : 'en';
-    setCurrentLang(lang);
-  }, [pathname]);
-
-  useEffect(() => {
     const loadTranslations = async () => {
+      setLoading(true);
       try {
-        const res = await fetch(`/locales/${currentLang}/manifest.json`);
+        const res = await fetch(`/locales/${language}/manifest.json`);
         if (!res.ok) throw new Error('Failed to load manifest.json');
 
         const files: string[] = await res.json();
         const translations = await Promise.all(
           files.map(async (file) => {
-            const fileRes = await fetch(`/locales/${currentLang}/${file}.json`);
+            const fileRes = await fetch(`/locales/${language}/${file}.json`);
             return fileRes.ok ? { [file]: await fileRes.json() } : {};
           })
         );
+
         const mergedMessages = translations.reduce(
           (acc, curr) => ({ ...acc, ...curr }),
           {}
@@ -51,7 +49,7 @@ export const TranslationProvider = ({
     };
 
     loadTranslations();
-  }, [currentLang]);
+  }, [language]);
 
   if (loading) return <div>Loading translations...</div>;
 

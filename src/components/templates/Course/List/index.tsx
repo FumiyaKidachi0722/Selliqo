@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { useLanguage } from '@/hooks/useLanguage';
+import { useLanguage } from '@/providers/LanguageProvider';
 import { Course } from '@/types/course';
 
 import styles from './List.module.css';
@@ -13,7 +13,6 @@ export const CourseListTemplate = () => {
   const { currentLang } = useLanguage();
 
   const createLink = (path: string) => {
-    if (path === '/') return path;
     return `/${currentLang}${path}`;
   };
 

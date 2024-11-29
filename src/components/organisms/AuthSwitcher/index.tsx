@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { AuthToggleButton } from '@/components/molecules/AuthToggleButton';
 import { LoginForm } from '@/components/molecules/LoginForm';
 import { SignupForm } from '@/components/molecules/SignupForm';
-import { useLanguage } from '@/hooks/useLanguage';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useLanguage } from '@/providers/LanguageProvider';
 import { useAuthStore } from '@/store/useAuthStore';
 import { UserRole } from '@/types/roles';
 

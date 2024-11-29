@@ -1,6 +1,8 @@
 // src/components/molecules/UserActions/index.tsx
+'use client';
+
 import { Button } from '@/components/atoms/Button';
-import { useLanguage } from '@/hooks/useLanguage';
+import { useLanguage } from '@/providers/LanguageProvider';
 import { useAuthStore } from '@/store/useAuthStore';
 
 import styles from './UserActions.module.css';
