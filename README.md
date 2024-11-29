@@ -1,5 +1,7 @@
 # Eコマースプラットフォーム設計書 (Next.js 15 と React 19)
 
+https://selliqo.vercel.app/
+
 ## 概要
 
 このプロジェクトでは、**Next.js 15 RC** および **React 19 RC** を使用してモダンなEコマースプラットフォームを構築します。主な機能には、スクール事業のコース一覧、カート管理、予約処理、ユーザーと管理者向けダッシュボード、およびログイン機能が含まれます。React Server Components、Suspense、Next.js の App Router の強化を活用し、パフォーマンスとスケーラビリティを最適化します。
