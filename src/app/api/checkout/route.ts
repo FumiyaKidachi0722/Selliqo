@@ -22,7 +22,6 @@ interface StripeProduct {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    console.log('body: ', body);
     const { id, stripeCustomerId, lang } = body;
 
     if (!id || !stripeCustomerId) {
@@ -36,15 +35,10 @@ export async function POST(req: NextRequest) {
     const product = (await stripe.products.retrieve(id, {
       expand: ['default_price'],
     })) as StripeProduct;
-    console.log('product: ', product);
 
     if (!product) {
       return NextResponse.json({ error: 'Course not found' }, { status: 404 });
     }
-
-    console.log('product.name: ', product.name);
-    console.log('price: ', product.default_price.unit_amount);
-    console.log('stripeCustomerId: ', stripeCustomerId);
 
     // Stripe Checkoutセッションを作成
     const session = await stripe.checkout.sessions.create({

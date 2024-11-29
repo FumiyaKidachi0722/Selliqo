@@ -21,8 +21,6 @@ export const CourseDetailTemplate = ({ id }: CourseDetailTemplateProps) => {
 
     const lang = localStorage.getItem('language') || 'ja';
 
-    console.log('------------------');
-
     try {
       const response = await fetch('/api/checkout', {
         method: 'POST',
