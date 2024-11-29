@@ -1,50 +1,36 @@
 // src/hooks/useTranslation.ts
-
 import { useContext } from 'react';
 
-import { TranslationContext } from '@/components/templates/TranslationProvider';
-
-type Messages = {
-  [key: string]: string | Messages;
-};
+import { TranslationContext } from '@/providers/TranslationProvider';
 
 export const useTranslation = () => {
   const messages = useContext(TranslationContext);
+
   if (!messages) {
     throw new Error('useTranslation must be used within a TranslationProvider');
   }
 
-  const getNestedValue = (obj: Messages, key: string): string | undefined => {
-    const keys = key.split('.');
-    let result: string | Messages | undefined = obj;
-
-    for (const k of keys) {
-      if (result && typeof result === 'object' && k in result) {
-        result = (result as Messages)[k];
-      } else {
-        return undefined;
-      }
-    }
-
-    return typeof result === 'string' ? result : undefined;
-  };
-
-  const replacePlaceholders = (
-    text: string,
-    variables: Record<string, string>
-  ): string => {
-    return text.replace(
-      /{{\s*(\w+)\s*}}/g,
-      (_, varName) => variables[varName] || ''
-    );
-  };
-
   const t = (key: string, variables: Record<string, string> = {}): string => {
-    const value = getNestedValue(messages, key);
-    if (!value) {
+    const [namespace, ...restKeys] = key.split('.');
+    const namespaceMessages = messages[namespace];
+
+    if (!namespaceMessages) {
+      console.warn(`Translation namespace "${namespace}" not found.`);
       return key;
     }
-    return replacePlaceholders(value, variables);
+
+    const translationKey = restKeys.join('.');
+    const result = namespaceMessages[translationKey];
+
+    if (typeof result === 'string') {
+      return Object.entries(variables).reduce(
+        (acc, [varName, value]) => acc.replace(`{{${varName}}}`, value),
+        result
+      );
+    }
+
+    console.warn(`Translation key "${key}" not found.`);
+    return key;
   };
 
   return { t };

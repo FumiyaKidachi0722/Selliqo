@@ -1,0 +1,33 @@
+/* src/components/molecules/AuthToggleButton/AuthToggleButton.module.css */
+
+.toggleButton {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin: 1rem auto 0; /* 上下中央揃え */
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  color: #ffffff;
+  background-color: #007bff; /* 一貫性を持たせた青色 */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+}
+
+.toggleButton:hover {
+  background-color: #0056b3; /* ホバー時の色変更 */
+}
+
+.toggleButton:active {
+  transform: scale(0.98); /* 押下時の軽い縮小 */
+}
+
+.toggleButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* フォーカスリング */
+}

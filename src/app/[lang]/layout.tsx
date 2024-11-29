@@ -1,7 +1,10 @@
+// src/app/[lang]/layout.tsx
 'use client';
 
-import { Layout } from '@/components/templates/Layout';
-import { TranslationProvider } from '@/components/templates/TranslationProvider';
+import { Footer } from '@/components/organisms/Footer';
+import { Header } from '@/components/organisms/Header';
+import { LanguageProvider } from '@/providers/LanguageProvider';
+import { TranslationProvider } from '@/providers/TranslationProvider';
 
 export default function LangLayout({
   children,
@@ -9,8 +12,12 @@ export default function LangLayout({
   children: React.ReactNode;
 }) {
   return (
-    <TranslationProvider>
-      <Layout>{children}</Layout>
-    </TranslationProvider>
+    <LanguageProvider>
+      <TranslationProvider>
+        <Header />
+        <main>{children}</main>
+        <Footer />
+      </TranslationProvider>
+    </LanguageProvider>
   );
 }

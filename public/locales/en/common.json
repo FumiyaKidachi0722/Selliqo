@@ -4,5 +4,7 @@
   "price": "Price",
   "addToCart": "Add to Cart",
   "loginTitle": "Login to Your Account",
-  "loginButton": "Login"
+  "loginButton": "Login",
+  "signupTitle": "SignUp to Your Account",
+  "signupButton": "SignUp"
 }
