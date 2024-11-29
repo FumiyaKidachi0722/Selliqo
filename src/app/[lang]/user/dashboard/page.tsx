@@ -3,17 +3,23 @@
 import { useEffect, useState } from 'react';
 
 import { LogoutButton } from '@/components/molecules/LogoutButton';
-import { fetchUserOrders } from '@/services/userService';
 import { useAuthStore } from '@/store/useAuthStore';
 
 export default function UserDashboardPage() {
-  const { isLoggedIn, checkAuthStatus } = useAuthStore();
-  const [orders, setOrders] = useState<{ id: number; status: string }[]>([]);
+  const { isLoggedIn, checkAuthStatus, stripeCustomerId } = useAuthStore();
+  const [orders, setOrders] = useState<
+    {
+      id: string;
+      amount: number;
+      currency: string | null;
+      status: string;
+      items: { name: string; quantity: number }[];
+    }[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // 初期化時に認証状態を確認
     checkAuthStatus();
   }, [checkAuthStatus]);
 
@@ -25,8 +31,26 @@ export default function UserDashboardPage() {
         return;
       }
 
+      if (!stripeCustomerId) {
+        setError('Missing Stripe customer ID. Please contact support.');
+        setLoading(false);
+        return;
+      }
+
       try {
-        const data = await fetchUserOrders();
+        const response = await fetch('/api/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ stripeCustomerId }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch orders');
+        }
+
+        const data = await response.json();
         setOrders(data);
       } catch (error) {
         console.error('Failed to fetch orders:', error);
@@ -37,7 +61,7 @@ export default function UserDashboardPage() {
     };
 
     loadOrders();
-  }, [isLoggedIn]);
+  }, [isLoggedIn, stripeCustomerId]);
 
   if (!isLoggedIn) {
     return <p>Please log in to view your dashboard.</p>;
@@ -58,7 +82,12 @@ export default function UserDashboardPage() {
       <ul>
         {orders.map((order) => (
           <li key={order.id}>
-            Order #{order.id} - {order.status}
+            <p>Order #{order.id}</p>
+            <p>
+              Amount: {order.amount}{' '}
+              {order.currency ? order.currency.toUpperCase() : 'N/A'}
+            </p>
+            <p>Status: {order.status}</p>
           </li>
         ))}
       </ul>

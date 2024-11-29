@@ -1,7 +1,6 @@
-// src/components/templates/Course/Detail/index.tsx
-
 import { useEffect, useState } from 'react';
 
+import { useAuthStore } from '@/store/useAuthStore'; // ログイン情報を利用
 import { Course } from '@/types/course';
 
 import styles from './Detail.module.css';
@@ -12,11 +11,17 @@ type CourseDetailTemplateProps = {
 
 export const CourseDetailTemplate = ({ id }: CourseDetailTemplateProps) => {
   const [course, setCourse] = useState<Course | null>(null);
+  const { isLoggedIn, stripeCustomerId } = useAuthStore();
 
   const handlePurchase = async () => {
-    if (!course) return;
+    if (!isLoggedIn || !stripeCustomerId) {
+      alert('購入するにはログインが必要です');
+      return;
+    }
 
     const lang = localStorage.getItem('language') || 'ja';
+
+    console.log('------------------');
 
     try {
       const response = await fetch('/api/checkout', {
@@ -25,10 +30,9 @@ export const CourseDetailTemplate = ({ id }: CourseDetailTemplateProps) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id: course.id,
-          name: course.name,
-          price: course.price,
+          id: course?.id,
           lang,
+          stripeCustomerId,
         }),
       });
 
@@ -74,9 +78,16 @@ export const CourseDetailTemplate = ({ id }: CourseDetailTemplateProps) => {
         スケジュール: {course.metadata.schedule}
       </p>
       <p className={styles.courseTeacher}>講師: {course.metadata.teacher}</p>
-      <button onClick={handlePurchase} className={styles.purchaseButton}>
+      <button
+        onClick={handlePurchase}
+        className={styles.purchaseButton}
+        disabled={!isLoggedIn} // ログインしていない場合はボタンを無効化
+      >
         購入する
       </button>
+      {!isLoggedIn && (
+        <p style={{ color: 'red' }}>ログインすると購入できます</p>
+      )}
     </div>
   );
 };
