@@ -2,28 +2,42 @@
 
 import { useEffect, useState } from 'react';
 
+import { LogoutButton } from '@/components/molecules/LogoutButton';
 import { fetchUserOrders } from '@/services/userService';
 import { useAuthStore } from '@/store/useAuthStore';
 
 export default function UserDashboardPage() {
-  const { isLoggedIn } = useAuthStore();
+  const { isLoggedIn, checkAuthStatus } = useAuthStore();
   const [orders, setOrders] = useState<{ id: number; status: string }[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // 初期化時に認証状態を確認
+    checkAuthStatus();
+  }, [checkAuthStatus]);
 
   useEffect(() => {
     const loadOrders = async () => {
+      if (!isLoggedIn) {
+        setError('Please log in to view your dashboard.');
+        setLoading(false);
+        return;
+      }
+
       try {
         const data = await fetchUserOrders();
         setOrders(data);
       } catch (error) {
         console.error('Failed to fetch orders:', error);
+        setError('Failed to load your orders. Please try again later.');
       } finally {
         setLoading(false);
       }
     };
 
     loadOrders();
-  }, []);
+  }, [isLoggedIn]);
 
   if (!isLoggedIn) {
     return <p>Please log in to view your dashboard.</p>;
@@ -31,6 +45,10 @@ export default function UserDashboardPage() {
 
   if (loading) {
     return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
   }
 
   return (
@@ -44,6 +62,7 @@ export default function UserDashboardPage() {
           </li>
         ))}
       </ul>
+      <LogoutButton />
     </div>
   );
 }

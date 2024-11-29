@@ -7,11 +7,8 @@ import stripe from '@/services/stripe';
 export async function POST(req: NextRequest) {
   try {
     const { identifier, password } = await req.json();
-    console.log('Received identifier:', identifier);
-    console.log('Received password:', password);
 
     if (!identifier || !password) {
-      console.log('Missing fields');
       return NextResponse.json(
         { message: 'すべてのフィールドを入力してください' },
         { status: 400 }
@@ -20,7 +17,6 @@ export async function POST(req: NextRequest) {
 
     // Stripeで顧客リストを取得
     const customers = await stripe.customers.list({ limit: 100 });
-    console.log('Fetched customers:', customers.data.length);
 
     const customer = customers.data.find(
       (cust) =>
@@ -28,16 +24,13 @@ export async function POST(req: NextRequest) {
     );
 
     if (!customer) {
-      console.log('Customer not found');
       return NextResponse.json(
         { message: '認証情報が正しくありません' },
         { status: 400 }
       );
     }
-    console.log('customer:', customer);
 
     const passwordHash = customer.metadata?.passwordHash;
-    console.log('Password hash:', passwordHash);
 
     if (!passwordHash) {
       return NextResponse.json(
@@ -49,7 +42,6 @@ export async function POST(req: NextRequest) {
     const match = await bcrypt.compare(password, passwordHash);
 
     if (!match) {
-      console.log('Password does not match');
       return NextResponse.json(
         { message: '認証情報が正しくありません' },
         { status: 400 }

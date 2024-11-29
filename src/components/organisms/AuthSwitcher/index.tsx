@@ -45,13 +45,11 @@ export const AuthSwitcher = ({ isInitialLogin = true }: AuthSwitcherProps) => {
       const data = await response.json();
       const { token, username, email, role, stripeCustomerId } = data;
 
-      console.log('data: ', data);
-
       login(token, username, email, role, stripeCustomerId);
 
-      if (role === '0' || role === '1') {
+      if (role === UserRole.ADMIN || role === UserRole.MANAGER) {
         navigate('/admin/dashboard');
-      } else if (role === '2') {
+      } else if (role === UserRole.USER) {
         navigate('/user/dashboard');
       } else {
         setError('未承認の役割です');
@@ -78,8 +76,6 @@ export const AuthSwitcher = ({ isInitialLogin = true }: AuthSwitcherProps) => {
         },
         body: JSON.stringify({ username, email, password }),
       });
-
-      console.log('response: ', response);
 
       if (!response.ok) {
         const errorData = await response.json();

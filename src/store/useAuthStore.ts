@@ -1,6 +1,6 @@
-// src/store/useAuthStore.ts
 import { create } from 'zustand';
 
+// 型定義
 interface AuthState {
   isLoggedIn: boolean;
   token: string | null;
@@ -23,43 +23,88 @@ interface AuthState {
     stripeCustomerId: string
   ) => void;
   logout: () => void;
+  checkAuthStatus: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  isLoggedIn: false,
-  token: null,
-  username: null,
-  email: null,
-  role: null,
-  stripeCustomerId: null,
+export const useAuthStore = create<AuthState>((set) => {
+  // クライアントサイドのみでlocalStorageをチェック
+  const isClient = typeof window !== 'undefined';
 
-  login: (token, username, email, role, stripeCustomerId) =>
-    set({
-      isLoggedIn: true,
-      token,
-      username,
-      email,
-      role,
-      stripeCustomerId,
-    }),
+  // ローカルストレージから状態を読み込む
+  const storedAuth = isClient
+    ? JSON.parse(localStorage.getItem('auth') || '{}')
+    : {};
 
-  signup: (token, username, email, role, stripeCustomerId) =>
-    set({
-      isLoggedIn: true,
-      token,
-      username,
-      email,
-      role,
-      stripeCustomerId,
-    }),
+  return {
+    isLoggedIn: !!storedAuth.token,
+    token: storedAuth.token || null,
+    username: storedAuth.username || null,
+    email: storedAuth.email || null,
+    role: storedAuth.role || null,
+    stripeCustomerId: storedAuth.stripeCustomerId || null,
 
-  logout: () =>
-    set({
-      isLoggedIn: false,
-      token: null,
-      username: null,
-      email: null,
-      role: null,
-      stripeCustomerId: null,
-    }),
-}));
+    // ログイン処理
+    login: (token, username, email, role, stripeCustomerId) => {
+      const authData = { token, username, email, role, stripeCustomerId };
+      if (isClient) {
+        localStorage.setItem('auth', JSON.stringify(authData));
+      }
+      set({
+        isLoggedIn: true,
+        ...authData,
+      });
+    },
+
+    // サインアップ処理
+    signup: (token, username, email, role, stripeCustomerId) => {
+      const authData = { token, username, email, role, stripeCustomerId };
+      if (isClient) {
+        localStorage.setItem('auth', JSON.stringify(authData));
+      }
+      set({
+        isLoggedIn: true,
+        ...authData,
+      });
+    },
+
+    // ログアウト処理
+    logout: () => {
+      if (isClient) {
+        localStorage.removeItem('auth');
+      }
+      set({
+        isLoggedIn: false,
+        token: null,
+        username: null,
+        email: null,
+        role: null,
+        stripeCustomerId: null,
+      });
+    },
+
+    // 認証状態の確認
+    checkAuthStatus: () => {
+      if (!isClient) return;
+      const storedAuth = JSON.parse(localStorage.getItem('auth') || '{}');
+      if (storedAuth.token) {
+        set({
+          isLoggedIn: true,
+          token: storedAuth.token,
+          username: storedAuth.username,
+          email: storedAuth.email,
+          role: storedAuth.role,
+          stripeCustomerId: storedAuth.stripeCustomerId,
+        });
+      } else {
+        set({
+          isLoggedIn: false,
+          token: null,
+          username: null,
+          email: null,
+          role: null,
+          stripeCustomerId: null,
+        });
+      }
+    },
+  };
+});

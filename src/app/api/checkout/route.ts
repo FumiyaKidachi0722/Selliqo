@@ -7,9 +7,6 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { id, name, price, lang } = body;
 
-    console.log('id: ', id);
-    console.log('lang: ', lang);
-
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [

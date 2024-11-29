@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
       token,
       username,
       email,
-      role: '2',
+      role: customer.metadata.role,
       stripeCustomerId: customer.id,
     });
   } catch (error) {
