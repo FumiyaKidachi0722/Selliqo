@@ -25,15 +25,15 @@ jobs:
 
       # 3. 依存関係をインストール
       - name: Install dependencies
-        run: npm install
+        run: yarn install
 
       # 4. テストを実行
       - name: Run tests
-        run: npm test
+        run: yarn test
 
       # 5. テストカバレッジを生成（オプション）
       - name: Run tests with coverage
-        run: npx jest --coverage
+        run: yarn jest --coverage
 
       # 6. カバレッジ結果を保存（オプション）
       - name: Upload coverage to GitHub
