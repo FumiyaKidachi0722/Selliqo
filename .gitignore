@@ -8,7 +8,7 @@ node_modules/
 .yarnrc.yml
 yarn-error.log
 yarn-debug.log*
-yarn.lock
+# yarn.lock
 
 # TypeScriptビルド出力
 dist/
