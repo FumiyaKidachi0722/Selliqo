@@ -36,6 +36,7 @@ jobs:
         run: yarn install --immutable
 
       # 6. テストを実行
+      - name: Run tests
         run: yarn test
 
       # 7. テストカバレッジを生成（オプション）
