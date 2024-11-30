@@ -31,12 +31,11 @@ jobs:
       - name: Prepare Yarn
         run: corepack prepare yarn@4.5.0 --activate
 
-      # 5. 依存関係をインストール
+      # 5. 依存関係をインストール（immutableフラグを追加）
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --immutable
 
       # 6. テストを実行
-      - name: Run tests
         run: yarn test
 
       # 7. テストカバレッジを生成（オプション）
