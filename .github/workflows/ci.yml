@@ -1,0 +1,51 @@
+name: CI - Test Automation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. リポジトリをチェックアウト
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Node.jsをセットアップ
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 3. Corepackを有効化
+      - name: Enable Corepack
+        run: corepack enable
+
+      # 4. 指定されたYarnバージョンを準備
+      - name: Prepare Yarn
+        run: corepack prepare yarn@4.5.0 --activate
+
+      # 5. 依存関係をインストール（immutableフラグを追加）
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      # 6. テストを実行
+      - name: Run tests
+        run: yarn test
+
+      # 7. テストカバレッジを生成（オプション）
+      - name: Run tests with coverage
+        run: yarn jest --coverage
+
+      # 8. カバレッジ結果を保存（オプション）
+      - name: Upload coverage to GitHub
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage/

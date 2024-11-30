@@ -17,7 +17,7 @@ export const Header = () => {
       <div className={styles.rightSection}>
         <SearchBar />
         <UserActions />
-        <LanguageToggleButton /> {/* 言語切り替えボタンを右端に配置 */}
+        <LanguageToggleButton />
       </div>
     </header>
   );
