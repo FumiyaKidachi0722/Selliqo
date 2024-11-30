@@ -2,7 +2,7 @@
 import { create } from 'zustand';
 
 // 型定義
-interface AuthState {
+export interface AuthState {
   isLoggedIn: boolean;
   token: string | null;
   username: string | null;

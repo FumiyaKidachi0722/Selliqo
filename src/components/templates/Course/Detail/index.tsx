@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+// src/components/templates/Course/Detail/index.tsx
 
-import { useAuthStore } from '@/store/useAuthStore'; // ログイン情報を利用
+import React, { useEffect, useState } from 'react';
+import { useAuthStore } from '@/store/useAuthStore';
 import { Course } from '@/types/course';
-
 import styles from './Detail.module.css';
 
 type CourseDetailTemplateProps = {
@@ -46,11 +46,18 @@ export const CourseDetailTemplate = ({ id }: CourseDetailTemplateProps) => {
   };
 
   useEffect(() => {
-    if (!id) return;
+    if (!id) {
+      // IDがない場合は早期リターンして何もレンダリングしない
+      setCourse(null);
+      return;
+    }
 
     const fetchCourse = async () => {
       try {
         const response = await fetch(`/api/courses/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch course data');
+        }
         const data: Course = await response.json();
         setCourse(data);
       } catch (error) {
@@ -61,6 +68,12 @@ export const CourseDetailTemplate = ({ id }: CourseDetailTemplateProps) => {
     fetchCourse();
   }, [id]);
 
+  // IDが空の場合は何もレンダリングしない
+  if (!id) {
+    return null;
+  }
+
+  // コースデータがまだ読み込まれていない場合はローディングメッセージを表示
   if (!course) {
     return <div className={styles.loading}>Loading...</div>;
   }
@@ -70,7 +83,7 @@ export const CourseDetailTemplate = ({ id }: CourseDetailTemplateProps) => {
       <h1 className={styles.courseTitle}>{course.name}</h1>
       <p className={styles.courseDescription}>{course.description}</p>
       <p className={styles.coursePrice}>
-        価格: \{course.price.toLocaleString()}
+        価格: ¥{course.price.toLocaleString()}
       </p>
       <p className={styles.courseSchedule}>
         スケジュール: {course.metadata.schedule}
@@ -79,7 +92,7 @@ export const CourseDetailTemplate = ({ id }: CourseDetailTemplateProps) => {
       <button
         onClick={handlePurchase}
         className={styles.purchaseButton}
-        disabled={!isLoggedIn} // ログインしていない場合はボタンを無効化
+        disabled={!isLoggedIn}
       >
         購入する
       </button>

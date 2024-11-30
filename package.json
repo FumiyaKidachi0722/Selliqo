@@ -9,9 +9,10 @@
     "start": "next start",
     "lint": "eslint . --ignore-pattern '.next' --ignore-pattern '.yarn'",
     "format": "prettier --write .",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "dependencies": {
+    "@testing-library/react-hooks": "^8.0.1",
     "bcrypt": "^5.1.1",
     "jsonwebtoken": "^9.0.2",
     "next": "^15.0.3",
@@ -19,13 +20,14 @@
     "react-dom": "19.0.0-rc-7670501b-20241124",
     "stripe": "^17.3.1",
     "swiper": "^11.1.15",
-    "zustand": "^5.0.0-rc.2"
+    "zustand": "^5.0.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.1.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
     "@types/bcrypt": "^5.0.2",
     "@types/identity-obj-proxy": "^3",
     "@types/jest": "^29.5.14",
@@ -34,6 +36,7 @@
     "@types/node": "^22.10.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "@types/testing-library__react": "^10.2.0",
     "@typescript-eslint/eslint-plugin": "^8.8.1",
     "@typescript-eslint/parser": "^8.8.1",
     "babel-jest": "^29.7.0",
@@ -47,7 +50,9 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "jest-fetch-mock": "^3.0.3",
     "prettier": "^3.3.3",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   },
