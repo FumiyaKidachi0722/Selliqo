@@ -55,6 +55,9 @@ const eslintConfig = [
         version: 'detect',
       },
     },
+    env: {
+      jest: true,
+    },
   },
 ];
 

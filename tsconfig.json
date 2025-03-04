@@ -18,12 +18,13 @@
     "paths": {
       "@/*": ["./*"]
     },
+    "types": ["jest"],
     "plugins": [
       {
         "name": "next"
       }
     ]
   },
-  "include": ["next-env.d.ts", "src", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "src", ".next/types/**/*.ts", "jest.setup.js"],
   "exclude": ["node_modules"]
 }
